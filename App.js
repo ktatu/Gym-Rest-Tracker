@@ -1,20 +1,50 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar"
+import { StyleSheet, View } from "react-native"
+import Constants from "expo-constants"
+import Text from "./src/components/Text"
+import Timer from "./src/components/Timer"
+import TimerOptions from "./src/components/TimerOptions"
+import { useState } from "react"
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    const [setsRemaining, setSetsRemaining] = useState(5)
+    const [textInputOpen, setTextInputOpen] = useState(false)
+
+    const handleReduceSets = () => {
+        if (setsRemaining === 0) {
+            return
+        }
+
+        setSetsRemaining((setsRemaining) => setsRemaining - 1)
+    }
+
+    const handleTextInputStatus = () => {
+        setTextInputOpen(!textInputOpen)
+    }
+
+    return (
+        <View style={styles.container}>
+            <StatusBar style="light" />
+            <Text style={styles.setsText}>Sets remaining: {setsRemaining}</Text>
+            <Timer
+                reduceSets={handleReduceSets}
+                textInputOpen={textInputOpen}
+            />
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    container: {
+        alignItems: "center",
+        backgroundColor: "#232429",
+        display: "flex",
+        height: "100%",
+        paddingTop: Constants.statusBarHeight,
+        width: "100%",
+    },
+    setsText: {
+        marginTop: 50,
+        marginBottom: 50,
+    },
+})
